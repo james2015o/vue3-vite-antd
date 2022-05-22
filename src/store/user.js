@@ -1,15 +1,14 @@
-import { StorageSerializers, useStorage } from "@vueuse/core";
+import { ref } from "vue";
+import userApi from "../api/user";
+//全局当前用户
+const _user = ref();
 
-const user = useStorage("user", null, undefined, {
-  serializer: StorageSerializers.object,
-});
+export const getUser = () => {
+  if (!_user.value) {
+    userApi.getUserByToken({}, { useLoading: false }).then((data) => {
+      _user.value = data;
+    });
+  }
 
-export default function useUserStore() {
-  const login = (username) => {
-    user.value = { username };
-  };
-  return {
-    user,
-    login,
-  };
-}
+  return _user;
+};
