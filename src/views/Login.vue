@@ -45,14 +45,13 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, getCurrentInstance } from "vue";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
-import userApi from "../api/user";
-import { getUser } from "../store/user";
-import { setToken } from "../store/token";
-import loading from "../store/loading";
-import { useRouter } from "vue-router";
-const router = useRouter();
+import { login } from "../service/user";
+
+// import loading from "../store/loading";
+const _this = getCurrentInstance().ctx;
+
 const form = ref();
 
 const formState = reactive({
@@ -62,15 +61,8 @@ const formState = reactive({
 
 //提交表单且数据验证成功后回调事件
 const onFinish = async (values) => {
-  // console.log("Success:", values);
-  const data = await userApi.login(formState, {
-    okMsg: "登录成功",
-  });
-  if (data.token) {
-    console.log(data.token);
-    setToken(data.token);  
-    router.push("/");
-  }
+  await login(formState, _this);
+
   //清空表单字段
   // form.value.resetFields();
 };

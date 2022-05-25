@@ -1,14 +1,15 @@
 import { ref } from "vue";
-import userApi from "../api/user";
+import { getUserByToken } from "../service/user";
+ 
 //全局当前用户
-const _user = ref();
+const _user = ref({});
 
-export const getUser = () => {
-  if (!_user.value) {
-    userApi.getUserByToken({}, { useLoading: false }).then((data) => {
-      _user.value = data;
-    });
+//return promise
+export const getUser = async () => {
+  if (!_user.value.id) {
+    const data = await getUserByToken();
+    _user.value = data;
   }
-
+ 
   return _user;
 };

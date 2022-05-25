@@ -1,6 +1,6 @@
 <template>
   <a-config-provider :locale="zhCN">
-    <router-view></router-view>
+      <router-view></router-view>
   </a-config-provider>
 </template>
 
@@ -34,7 +34,7 @@ dayjs.locale("zh-cn");
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 *::-webkit-scrollbar:hover {
   width: 10px;

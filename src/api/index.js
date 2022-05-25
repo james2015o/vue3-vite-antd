@@ -19,7 +19,7 @@ axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
-    console.log(config);
+    // console.log(config);
     //设置请求头的token
     config.headers[REQUEST_HEARDER_TOKEN] = getToken().value;
     //改请求需要使用loading，不传默认useLoading
