@@ -1,12 +1,19 @@
 <template>
   <div>
     <SearchPanel
-      :collapse="4"
+      labelWidth="120px"
+      :collapse="7"
       :searchFields="searchFields"
       @search="onsearch"
     />
 
-    <SearchResult :columns="columns"  :data-source="data">
+    <SearchTable
+      ref="searchTable"
+      :columns="columns"
+      :params="params"
+      :api="userApi.getUerList"
+    >
+      <template #emptyText> 暂无数据 </template>
       <template #headerCell="{ column }">
         <template v-if="column.key === 'name'">
           <span>
@@ -52,40 +59,20 @@
           </span>
         </template>
       </template>
-    </SearchResult>
+    </SearchTable>
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
 import { COMPONENT_TYPES } from "@/setup/global";
 import SearchPanel from "@/components/SearchPanel.vue";
-import SearchResult from "@/components/SearchResult.vue";
+import SearchTable from "@/components/SearchTable.vue";
+import userApi from "../../api/user";
 import dayjs from "dayjs";
 import { SmileOutlined, DownOutlined } from "@ant-design/icons-vue";
+const searchTable = ref();
+const data = ref([]);
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
 const options1 = [
   {
     label: "Manager",
@@ -136,99 +123,121 @@ const searchFields = ref([
     modelValue: "name",
     component: COMPONENT_TYPES.INPUT,
     defaultValue: "张三",
-    placeholder: "用户名",
+    attrs: {
+      placeholder: "用户名",
+    },
   },
   {
     label: "用户名名",
     modelValue: "name1",
     component: COMPONENT_TYPES.SELECT,
-    options: options1,
-    placeholder: "用户名",
-    onchange: onselectchange,
+    attrs: {
+      options: options1,
+      placeholder: "用户名",
+      onchange: onselectchange,
+    },
   },
   {
     label: "用用户名名",
     modelValue: "name2",
     component: COMPONENT_TYPES.SELECT,
-    options: options2,
-    showSearch: true,
-    placeholder: "用户11名",
+    attrs: { options: options2, showSearch: true, placeholder: "用户11名" },
   },
   {
     label: "用用户名户名",
     modelValue: "name3",
     component: COMPONENT_TYPES.DATE_PICKER,
-    placeholder: "日期",
-    disabledDate: (current) => {
-      return current && current < dayjs().endOf("day");
+    defaultValue: ref(dayjs("2015/01/01", "YYYY-MM-DD")),
+    attrs: {
+      placeholder: "日期",
+      disabledDate: (current) => {
+        return current && current < dayjs().endOf("day");
+      },
     },
   },
   {
     label: "用用户名户名",
     modelValue: "name4",
     component: COMPONENT_TYPES.RANGE_PICKER,
-    placeholder: ["开始时间", "结束时间"],
-    showTime: false,
-    componentWidth: 200,
-    options: [],
+    attrs: {
+      width: "260px",
+      placeholder: ["开始时间", "结束时间"],
+      showTime: false,
+      options: [],
+    },
   },
   {
     label: "用户名名",
-    modelValue: "name5",
+    modelValue: "name51",
     component: COMPONENT_TYPES.RADIO,
-    componentWidth: 250,
     defaultValue: null,
-    placeholder: "用户名",
-    // optionType:"button",
-    options: [
-      { label: "全部", value: null },
-      { label: "Apple", value: "Apple" },
-      { label: "Pear", value: "Pear" },
-    ],
+    attrs: {
+      width: "260px",
+      placeholder: "用户名",
+      optionType: "button",
+      buttonStyle: "solid",
+      options: [
+        { label: "全部", value: null },
+        { label: "Apple", value: "Apple" },
+        { label: "Pear", value: "Pear" },
+      ],
+    },
   },
   {
     label: "用户名",
     modelValue: "name6",
     component: COMPONENT_TYPES.INPUT,
     defaultValue: 1,
-    placeholder: "用户名",
+    attrs: { placeholder: "用户名" },
   },
   {
     label: "用户名类型",
     modelValue: "name7",
     component: COMPONENT_TYPES.INPUT,
     defaultValue: 1,
-    placeholder: "用户名",
+    attrs: { placeholder: "用户名" },
   },
 ]);
-const columns = [
+const columns = ref([
   {
-    name: "Name",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "id",
+    resizable: true,
+    width: 150,
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "用户名",
+    dataIndex: "username",
+    resizable: true,
+    width: 150,
+    sorter: true,
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "昵称",
+    dataIndex: "nickName",
+    resizable: true,
+    width: 100,
+    minWidth: 100,
+    maxWidth: 200,
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
+    title: "地址",
+    dataIndex: "mobile",
+    ellipsis: true,
   },
   {
-    title: "Action",
+    title: "部门",
+    dataIndex: "dept",
+  },
+  {
+    title: "操作",
     key: "action",
   },
-];
-function onsearch(values) {
-  console.log(values);
+]);
+const params = ref();
+async function onsearch(values) { 
+  params.value = values; 
+  searchTable.value.search();
+ 
 }
 
 function onselectchange(e) {
