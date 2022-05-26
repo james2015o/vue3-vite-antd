@@ -5,6 +5,7 @@ const userApi = {
   logout: (params, option) => POST("/user/logout", params, option),
   getUserByToken: (params, option) => GET("/user/getByToken", params, option),
   testSessionGone: (params, option) => GET("/test/sessiongone", params, option),
+  getUerList: (params, option) => GET("/user/list", params, option),
 };
 
 export default userApi;

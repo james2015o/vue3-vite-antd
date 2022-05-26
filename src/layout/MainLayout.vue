@@ -29,7 +29,7 @@
           <div style="background: white; min-height: 100%">
             <router-view v-if="!reload" v-slot="{ Component }">
               <KeepAlive>
-                <component :is="Component" />
+                <component :is="Component" style="padding:14px" />
               </KeepAlive>
             </router-view>
           </div>
@@ -77,7 +77,7 @@ provide("reload", reload);
     }
   }
   .layout-side:hover {
-    overflow: auto;
+    overflow-y: auto;
   }
   .layout-content {
     flex: 1;

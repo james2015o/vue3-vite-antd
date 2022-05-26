@@ -8,6 +8,7 @@
     @edit="onedit"
   >
     <a-tab-pane v-for="pane in panes" :key="pane.name" :closable="closable">
+      <div class="page-name">{{ $route.name }}</div>
       <template #tab>
         <span style="display: flex; align-items: center">
           {{ pane.name }}
@@ -62,8 +63,22 @@ const refresh = () => {
 
 <style lang="less" scoped>
 .header-nav-tabs {
+  .page-name {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+  }
+  .page-name::before {
+    content: "";
+    width: 6px;
+    height: 20px;
+    background-color: var(--blue);
+    display: inline-block;
+    margin-right: 6px;
+  }
   :deep(.ant-tabs-nav) {
-    margin-bottom: 0lpx;
+    margin-bottom: 0px;
   }
   :deep(.ant-tabs-tab-active) {
     border-bottom-color: var(--blue) !important ;

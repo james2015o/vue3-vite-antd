@@ -1,9 +1,9 @@
 <template>
   <div>{{ user?.nickName }}</div>
 
-  <a-button type="primary">Primary Button</a-button>
-  <a-button>Default Button</a-button>
-  <a-button type="dashed">Dashed Button</a-button>
+  <a-button v-permission="1" type="primary">权限1</a-button>
+  <a-button v-permission="200">权限200</a-button>
+  <a-button v-permission="100" type="dashed">权限100</a-button>
   <a-button type="text">Text Button</a-button>
   <a-button type="link">Link Button</a-button>
   <div style="height: 400px; background-color: aquamarine"></div>
