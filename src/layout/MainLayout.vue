@@ -84,6 +84,7 @@ provide("reload", reload);
     padding: 10px 16px;
     margin: 0;
     min-height: 280px;
+    overflow: auto;
   }
   .layout-content:hover {
     overflow: auto;

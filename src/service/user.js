@@ -20,3 +20,5 @@ export const getUserByToken = async () => {
   const user = await userApi.getUserByToken({}, { useLoading: false });
   return user;
 };
+
+export const getUserList = async () => await userApi.getUerList();

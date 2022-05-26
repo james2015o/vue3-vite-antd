@@ -76,6 +76,7 @@ const refresh = () => {
     background-color: var(--blue);
     display: inline-block;
     margin-right: 6px;
+    border-bottom: 1px solid #bfbfbf4d
   }
   :deep(.ant-tabs-nav) {
     margin-bottom: 0px;

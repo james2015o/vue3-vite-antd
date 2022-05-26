@@ -2,7 +2,7 @@
   <div class="logo">后台管理系统</div>
   <div class="user">
     <a-badge dot>
-      <message-outlined style="font-size: 20px; color: white" />
+      <bell-outlined style="font-size: 20px; color: white" />
     </a-badge>
 
     <a-dropdown>
@@ -32,11 +32,11 @@
   </div>
 </template>
 <script setup>
-import { MessageOutlined } from "@ant-design/icons-vue";
+import { BellOutlined } from "@ant-design/icons-vue";
 import { logout } from "../../service/user";
-import { getCurrentInstance ,defineEmits} from "vue";
+import { getCurrentInstance, defineEmits } from "vue";
 const _this = getCurrentInstance().ctx;
-defineEmits('reload')
+defineEmits("reload");
 </script>
 <script>
 import { getUser } from "@/store/user";

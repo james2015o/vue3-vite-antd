@@ -11,4 +11,9 @@
 import { ref, reactive } from "vue";
 const value1 = ref("a");
 </script>
+<script>
+export default{
+  name:"my-range-picker"
+}
+</script>
 <style lang="less" scoped></style>
