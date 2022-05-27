@@ -32,7 +32,7 @@
       <a-button type="primary" @click="submit" :loading="loading"
         >查询</a-button
       >
-      <a-button type="primary" ghost @click="reset" :loading="loading"
+      <a-button type="primary" ghost @click="reset"
         >重置</a-button
       >
     </a-space>
@@ -91,6 +91,7 @@ function reset() {
   flex-wrap: wrap;
   row-gap: 14px;
   column-gap: 14px;
+  margin-bottom: 16px;
   .search-panel {
     display: flex;
     flex-direction: row;

@@ -1,5 +1,5 @@
 import userApi from "../api/user";
-import { setToken } from "../store/token";
+import { setToken } from "@/store/token";
 
 export const login = async (loginForm, app) => {
   const data = await userApi.login(loginForm, {

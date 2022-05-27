@@ -13,9 +13,14 @@
       :params="params"
       :api="userApi.getUerList"
     >
+      <template #buttons>
+        <div>
+          <a-button type="primary" @click="exportExcel" ghost>导出</a-button>
+        </div>
+      </template>
       <template #emptyText> 暂无数据 </template>
       <template #headerCell="{ column }">
-        <template v-if="column.key === 'name'">
+        <template v-if="column.dataIndex === 'name'">
           <span>
             <smile-outlined />
             Name
@@ -24,55 +29,34 @@
       </template>
 
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'name'">
-          <a>
-            {{ record.name }}
+        <template v-if="column.dataIndex === 'nickName'">
+          <a style="color: red" @click="showUserInfo">
+            {{ record.nickName }}
           </a>
-        </template>
-        <template v-else-if="column.key === 'tags'">
-          <span>
-            <a-tag
-              v-for="tag in record.tags"
-              :key="tag"
-              :color="
-                tag === 'loser'
-                  ? 'volcano'
-                  : tag.length > 5
-                  ? 'geekblue'
-                  : 'green'
-              "
-            >
-              {{ tag.toUpperCase() }}
-            </a-tag>
-          </span>
         </template>
         <template v-else-if="column.key === 'action'">
           <span>
-            <a>Invite 一 {{ record.name }}</a>
+            <a>Invite 一 {{ record.nickName }}</a>
             <a-divider type="vertical" />
-            <a>Delete</a>
-            <a-divider type="vertical" />
-            <a class="ant-dropdown-link">
-              More actions
-              <down-outlined />
-            </a>
+            <a v-permission="222">Delete</a>
           </span>
         </template>
       </template>
     </SearchTable>
+    <UserInfo v-model:visible="visible" />
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
 import { COMPONENT_TYPES } from "@/setup/global";
-import SearchPanel from "@/components/SearchPanel.vue";
-import SearchTable from "@/components/SearchTable.vue";
+import SearchPanel from "@/components/MySearchPanel.vue";
+import SearchTable from "@/components/MySearchTable.vue";
+import UserInfo from "./UserInfo.vue"
 import userApi from "../../api/user";
 import dayjs from "dayjs";
 import { SmileOutlined, DownOutlined } from "@ant-design/icons-vue";
 const searchTable = ref();
-const data = ref([]);
-
+const visible = ref(false)
 const options1 = [
   {
     label: "Manager",
@@ -201,6 +185,7 @@ const searchFields = ref([
 const columns = ref([
   {
     dataIndex: "id",
+    title: "id",
     resizable: true,
     width: 150,
   },
@@ -210,6 +195,9 @@ const columns = ref([
     resizable: true,
     width: 150,
     sorter: true,
+    customRender: (text, record) => {
+      return text.value + "先生";
+    },
   },
   {
     title: "昵称",
@@ -218,11 +206,20 @@ const columns = ref([
     width: 100,
     minWidth: 100,
     maxWidth: 200,
+    customRender: (text, record) => {
+      return text + "先生";
+    },
+  },
+  {
+    title: "手机",
+    dataIndex: "mobile",
   },
   {
     title: "地址",
-    dataIndex: "mobile",
+    dataIndex: "address",
     ellipsis: true,
+    resizable: true,
+    width: 150,
   },
   {
     title: "部门",
@@ -233,11 +230,11 @@ const columns = ref([
     key: "action",
   },
 ]);
+
 const params = ref();
-async function onsearch(values) { 
-  params.value = values; 
+async function onsearch(values) {
+  params.value = values;
   searchTable.value.search();
- 
 }
 
 function onselectchange(e) {
@@ -245,6 +242,16 @@ function onselectchange(e) {
     value: "jack1121211",
     label: "Jack121211112",
   });
+}
+
+function exportExcel() {
+  console.log(searchTable.value.selectedRows);
+}
+
+function showUserInfo(){
+  console.log(1,visible)
+  visible.value = true
+  console.log(2,visible)
 }
 </script>
 <style lang="less" scoped></style>
